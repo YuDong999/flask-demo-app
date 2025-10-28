@@ -1,0 +1,32 @@
+piVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-demo-app
+  namespace: dev
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: flask-demo-app
+  template:
+    metadata:
+      labels:
+        app: flask-demo-app
+    spec:
+      containers:
+      - name: flask-demo-app
+        image: 192.168.94.199:30003/test/flask-demo-app:<BUILD_TAG>
+        ports:
+        - containerPort: 5000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flask-demo-app
+  namespace: dev
+spec:
+  selector:
+    app: flask-demo-app
+  ports:
+  - port: 80
+    targetPort: 5000
